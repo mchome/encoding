@@ -5,8 +5,8 @@ import streams
 proc conventFromFile*(srcPath: string, destPath: string, lineEnding: string = "",
                      srcEncoding: string = "UTF-8", destEncoding: string = "UTF-8",
                      enableBom: bool = false): void =
-  if (srcPath.len < 1) or (destPath.len < 1) or (not srcPath.existsFile) or (srcEncoding == destEncoding): return
-  if not destPath.splitPath.head.existsDir: destPath.splitPath.head.createDir
+  if (srcPath.len < 1) or (destPath.len < 1) or (not srcPath.fileExists) or (srcEncoding == destEncoding): return
+  if not destPath.splitPath.head.dirExists: destPath.splitPath.head.createDir
 
   let bom = @[0xEF'i8, 0xBB'i8, 0xBF'i8]
 

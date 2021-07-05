@@ -18,8 +18,8 @@ const codePages* = {
 
 proc getFiles*(path: string, extFilter: seq[string] = @[]): seq[string] =
   var files: seq[string] = @[]
-  if path.existsFile:
+  if path.fileExists:
     files.add(path)
-  elif path.existsDir:
+  elif path.dirExists:
     for file in path.walkDirRec: files.add(file.expandFilename)
   files.filterIt((extFilter.len == 0) or extFilter.contains(it.splitFile.ext.toLowerAscii.replace(".", "")))

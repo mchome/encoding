@@ -5,7 +5,7 @@ import os
 import encodings
 import strutils
 import sequtils
-import libuchardet
+import uchardet
 import convert
 import utils
 
@@ -55,7 +55,7 @@ proc main(): void =
   let bLabelDest = pBatch.StaticText(label="Encoding", style=wAlignMiddle)
   let bCbDestEncoding = pBatch.ComboBox(value=codePagesName[0], choices=codePagesName, style=wCbReadOnly)
   let bLabelFilter = pBatch.StaticText(label="Filter", style=wAlignMiddle)
-  let bTcFilter = pBatch.TextCtrl(value="txt;config")
+  let bTcFilter = pBatch.TextCtrl(value="txt;config;erb")
   bTcFilter.font = Font(12)
   let bBtnClear = pBatch.Button(label="Clear")
   let bBtnConvert = pBatch.Button(label="Convert")
@@ -121,7 +121,7 @@ proc main(): void =
     let filters = bTcFilter.value.split(";")
     for file in files:
       if not srcFiles.contains(file):
-        if file.existsFile and filters.contains(file.splitFile.ext.toLowerAscii.replace(".", "")):
+        if file.fileExists and filters.contains(file.splitFile.ext.toLowerAscii.replace(".", "")):
           var charset = file.getFileCharset
           if (charset.len < 1) or (not codePagesName.contains(charset)): charset = codePagesName[0]
           else: statusbar.setStatusText(file&"'s encoding is detected: "&charset)
@@ -129,7 +129,7 @@ proc main(): void =
           let i = lcFiles.appendItem(file)
           lcFiles.setItem(index=i, col=1, text=charset)
           lcFiles.setItem(index=i, col=2, text=file)
-        elif file.existsDir:
+        elif file.dirExists:
           file.getFiles(filters).addFiles
   proc updateFiles(): void =
     lcFiles.deleteAllItems

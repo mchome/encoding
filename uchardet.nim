@@ -32,7 +32,7 @@ when not isDefined(uchardetStatic):
       dynlib = "uchardetLPath")
 else:
   cImport(includeDir/"uchardet.h", recurse = true, flags = "-f=ast2 -H")
-  {.passL: "-lstdc++ -static-libgcc -static-libgcc -static".}
+  {.passL: "-lstdc++ -static-libgcc -static".}
 
 
 const
